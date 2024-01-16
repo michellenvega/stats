@@ -1,0 +1,225 @@
+---
+title: "Stats 20, F23 -- Homework 6"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+```{r}
+source("waffles.R")
+waffles
+
+```
+
+### Part a
+
+The primary components of the Flesch reading score formula are: sentences, words, and syllables. The main steps to compute the reading score are: 1. Separate the text passage into individual sentences, and count the number of sentences. 2. Separate each sentence into individual words, and count the number of words for each sentence. 3. Separate each individual word into individual syllables, and count the number of syllables.
+
+We needs: total words, total sentences, total syllables.
+
+```{r}
+
+reading_ease <- function(x) {
+  if (length(x) > 1) {
+    x <- paste(x, collapse = " ")
+  }
+
+  # separate the text passage into individual sentences
+  split_sent <- strsplit(x, split = "[.!?:;]")[[1]]
+  split_sent <- tolower(split_sent)
+  split_sent <- gsub(pattern = "[[:punct:]]", replacement = "", split_sent)
+  # count the number of sentences
+  num_sent <- length(split_sent)
+
+  # separate each sentence into individual words
+  split_word <- strsplit(split_sent, split = " ")
+  # keep the words
+  keep_word <- function(words) { words[nchar(words) > 0] }
+  all_words <- lapply(split_word, keep_word)
+  # count the number of words for each sentence
+  num_words <- sum(unlist(lapply(all_words, length)))
+
+  ASL <- num_words / num_sent
+
+  ## accounting for short words:
+  ### words of three letters or shorter count as single syllables
+
+  
+  is_special_ending <- function(ending) {
+  is_es <- all(ending == c("e", "s"))
+  is_ed <- all(ending == c("e", "d"))
+  is_e_not_le <- ending[2] == "e" & ending[1] != "l"
+  
+  is_es | is_ed | is_e_not_le
+}
+
+rm_special_endings <- function(word_letters) {
+  word_tail <- tail(word_letters, n = 2)
+  if (is_special_ending(word_tail)) {
+    if (word_tail[2] == "e") {
+      word_letters <- word_letters[-length(word_letters)]
+    } else {
+      word_letters <- head(word_letters, n = -2)
+    }
+  }
+  word_letters
+}
+
+
+  is_vowel <- function(letter) {
+    letter %in% c("a", "e", "i", "o", "u", "y")
+  }
+
+  count_syllables <- function(word) {
+    word_letters <- unlist(strsplit(word, split = ""))
+    if (length(word_letters) <= 3) {
+      1
+    } else {
+      word_letters <- rm_special_endings(word_letters)
+      word_vowels <- is_vowel(word_letters)
+      sum(word_vowels) - sum(diff(which(word_vowels)) == 1)
+    }
+  }
+  
+  
+  
+  # count the number of syllables for each word in each sentence
+  num_syll <- sum(unlist(lapply(all_words, function(words) {
+    sapply(words, count_syllables)
+  })))
+  
+  # compute the score!
+  ASW <- num_syll / num_words
+  ASL <- 1.015 * ASL
+
+  ease <- 206.835 - 1.015 * ASL - 84.6 * ASW
+
+  ease
+  
+}
+
+```
+
+```{r}
+
+vec_Waf <- c("We need to remember what's important in life: friends, waffles, work.", "Or waffles, friends, work.", "Doesn't matter, but work is third.")
+reading_ease(vec_Waf)
+```
+
+## Question 2
+
+inputs a character vector and outputs the number of characters cntained in each entry of the vector without the nchar() function.
+
+```{r}
+
+my_nchar <- function(x){
+  
+  length(strsplit(x, split ="")[[1]])
+  
+  
+}
+
+nchar("mine! ")
+my_nchar("mine! ")
+
+```
+
+## Question 3
+
+```{r}
+
+my_strrep <- function(x, times){
+  
+  sapply(x, rep, times)
+  if(length(x) == 1) paste(rep(x, times), collapse ="")
+  else{
+    
+   unlist(lapply(x, function(y){
+      paste(rep(y, times), collapse ="")
+    }))
+    
+    
+  }
+  
+}
+
+strrep(c("v5", "6"), times = 9)
+my_strrep(c("v5", "6"), times = 9)
+
+
+```
+
+## Question 4
+
+```{r}
+
+`%is_in%` <- function(x, table){
+  
+  x <- as.character(x)
+  table <- as.character(table)
+  
+  match_vec <- logical(max(length(x), length(table)))
+  
+  for (k in seq_along(x)) {
+    match_vec[k] <- any(x[k] == table | (is.na(x[k]) & is.na(table)))
+    if(is.na(match_vec[k]))
+      match_vec[k] <- FALSE
+  }
+  match_vec
+  }
+
+c(1:10, NA)%in%c(5,7,NA)
+c(1:10, NA)%is_in%c(5,7,NA)
+
+
+
+```
+
+## Question 5
+
+```{r}
+
+my_gregexpr <- function(pattern, text) {
+  n <- length(text)
+  result <- vector("list", n)
+
+  for (i in seq_along(text)) {
+    positions <- integer(0)
+    pattern_len <- nchar(pattern)
+    text_len <- nchar(text[i])
+
+    for (start in 1:(text_len - pattern_len + 1)) {
+      if (substr(text[i], start, start + pattern_len - 1) == pattern) {
+        positions <- c(positions, start)
+      }
+    }
+
+    if (length(positions) == 0) {
+      positions <- -1
+    }
+
+    result[[i]] <- positions
+  }
+
+  result
+}
+
+
+pattern <- "is"
+text <- c("This is a test", "Here is another test", "No match here")
+
+result <- my_gregexpr(pattern, text)
+print(result)
+
+
+result <- gregexpr(pattern, text)
+print(result)
+
+```
