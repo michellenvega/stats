@@ -1,0 +1,466 @@
+---
+title: "Stats 20, F23 -- Homework 4"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+```{r}
+char <- c("4", "2", "1", "0")
+num <- 0:3
+charnum <- data.frame(char, num, stringsAsFactors = TRUE)
+```
+
+### Part a
+
+```{r}
+as.numeric(char)
+as.numeric(charnum$char)
+charnum
+```
+
+When I apply as.numeric to char, the function coerces the character vectors into a numeric one.
+
+When the data frame was created, it converted the character strings into factors. Thus, in the data frame, we have char (factors) and num (integers).
+
+When I apply as.numeric to charnum\$char, I am accessing the object char in the data frame. Converting a factor to an integer, the corresponding factor levels will be returned.
+
+The factor has values: 4, 2, 1, 0. When placed from least to greatest, we have levels 1,2,3,4. Value 4 corresponding to level 4, Value 2 to level 3, Value 1 to level 2, and Value 0 to level 1. Thus, what is returned is the levels of the factors themselves.
+
+### Part b
+
+```{r}
+as.numeric(charnum$char[])
+```
+
+## Question 2
+
+```{r}
+simple_list <- list("vector" = 1:10, "matrix" = matrix(6:1, nrow = 3, ncol = 2))
+simple_list$mine <- NULL
+```
+
+### Part a
+
+simple_list\$NULL \<- NULL
+
+This command cannot be used to ass a named component_list that contains the NULL object because:
+
+NULL is an undefined and empty value. Thus, what the command is asking for is to access an undefined and empty value. This is not allowed since the 'object' essentially does not exist.
+
+When attempting to add a NULL component, the 'component' is not 'added' to the list, primarily because NULL represents an object that does not exist.
+
+### Part b
+
+```{r}
+## simple_list$mine <- 1
+my_null <- list(NULL)
+simple_list$mine <- my_null
+
+simple_list
+
+length(simple_list)
+
+
+
+```
+
+## Question 3
+
+find min of x, find max of x, vector of scaled values all in a list output
+
+```{r}
+
+## output:
+### contains min and max scales values of input vector
+### contains additional attributes that contain, respectively, the minimum and maximum of the input vector
+
+my_scale <- function(x){
+  
+  min_x <- min(x)
+  max_x <- max(x)
+  
+  ## now we obtain the vector of scaled values
+  if(is.null(attr(x, "a")) | is.null(attr(x, "b"))){
+  z <- vapply(x, function(x){
+    numerator <- x-min_x
+    denominator <- max_x-min_x
+    numerator/denominator
+  }, numeric(1))
+  
+  scaled <- z
+  } else {
+    a <- attr(x, "a")
+    b <- attr(x, "b")
+    z <- vapply(x, function(x){
+    numerator <- (x-min_x)*(b-a)
+    denominator <- max_x-min_x
+    total <- numerator/denominator
+    total + a
+  }, numeric(1))
+    scaled <- z
+  }
+  attr(scaled, "a") <- min_x
+  attr(scaled, "b") <- max_x
+  scaled
+  
+}
+
+test <- 1:10
+test
+my_scale(test)
+my_scale(my_scale(test))
+```
+
+## Question 4
+
+### Part a: Writing a Function
+
+![](/Users/michellenavarretevega/Desktop/vander.png){width="414"}
+
+The purpose of this function is to take a matrix of the form of A as shown in the picture, and find the determinant using the formula given. The determinant can be found as the product of all the differences of values where i exceeds j.
+
+Given an input of a matrix A, output a vector containing the determinant of the matrix. The function det() cannot be used.
+
+```{r}
+## this is my proposed solution:
+vander_form <- function(A){
+  
+  a_vec <- c(A[2,])
+  
+  determinant <- 1
+  for(i in 2:length(a_vec)){
+  value <- vapply(1:(i-1), function(j){ a_vec[i] - a_vec[j] }, 
+                  numeric(1))
+  for(i in seq_along(1:length(value))){
+  determinant <- determinant * value[i]
+  }
+  }
+  determinant
+
+}
+
+## an example
+example <- cbind(c(1,1,1,1,1), c(1,2,4,8,16), c(1,3,9,27,81), c(1,4,16,64,256), c(1,5,25,125,625))
+
+vander_form(example)
+det(example)
+
+
+## im using this function to create a matrix of needed form given a vector
+      ## and n col
+## this is not part of the problem
+make_vander <- function(x,n){
+  m <- length(x)
+  B <- matrix(1, nrow = m, ncol = n)
+  
+  for(i in 2:n-1){
+      B[i+1,] <- x^(i)
+  }
+  B
+}
+
+## another example
+example0 <- cbind(c(1,4,7,9,2))
+example2 <- make_vander(example0, 5)
+
+vander_form(example2)
+det(example2)
+
+```
+
+The format of the matrix should be as mentioned in the picture. I checked it with the det() function and used a matrix that was in my math 33a discussion where we discussed this formula. The most important thing is the second row of the example matrix A in the description. The pattern as shown is that the second row is used to determine the rest of the rows.
+
+### Part b: Debugging a Function
+
+Given a data frame, return the sum of all the means.
+
+We gave 8 participants a survey with some of the top companies and ask them to pick their top favorite. We gave them the option to estimate how many times they have been there in the past 1 to 2 years.
+
+Find the sum of the average times participants shopped at each company.
+
+**This is my interpretation of it**
+
+```{r}
+
+favorite <- factor(c("krispy kreme", "walmart", "target", "starbucks", "walmart", "krispy kreme", "kmart", "krispy kreme"), ordered = FALSE) 
+times_shopped <- c(21,50,350,730, 56, 89,12,34)
+
+my_frame <- data.frame("participant" = 1:length(favorite),"stores"= favorite,"amount of shopping trips"=times_shopped)
+my_frame
+
+##find_sum_of_means <- function(x){sum(tapply(my_frame$amount.of.shopping.trips, list(length(my_frame$stores)), FUN=mean))}
+
+##find_sum_of_means(my_frame)
+
+
+```
+
+Error 1: Does not account for NA values ====\> this is not for every case but there might be some values that are NA and thus, this needs to be fixed by removing them. because the calculations will result in NA is they are included Error 2: for the list in the argument of tapply =\> need to make sure it is a vector and not just a numeric value ====\> this needs to be fixed because tapply uses that argument to identify the subet you want to work with; fix it by doing 1:length(x) instead of just the length
+
+FIXED:
+
+```{r}
+find_sum_of_means <- function(x, na.rm=FALSE){
+ sum(tapply(my_frame$amount.of.shopping.trips, list(1:length(my_frame$stores)), FUN=mean))
+}
+```
+
+### Part c: Multiple Choice Questions
+
+1.  Given the ice_cream object and a vector sales of the number of sales each flavor has had for the past year, if we want to save these objects into an RData file, which one of the following is a correct format for using the save() function?
+
+```{=html}
+<!-- -->
+```
+a)  save(list(ice_cream = ice_cream, sales = sales), file = flavor_sales.RData)
+
+b)  save(list(ice_cream = ice_cream, sales = sales), filename = "flavor_sales.RData")
+
+c)  save(ice_cream, sales, file "flavor_sales.RData")
+
+d)  save(ice_cream, sales, file = "flavor_sales.RData")
+
+e)  All of the above.
+
+Correct answer: d
+
+2.  With the following,
+
+df = a data frame containing tree_type and parks
+
+tree_type = factor variable indicating tree types
+
+parks = numeric vector giving the amount of parks a tree is planted in.
+
+What command will correctly provide the mean amount of parks for each tree type?
+
+a)  mean_parks_by_tree \<- tapply(df$parks, df$tree_type, mean)
+
+b)  mean_parks_by_tree \<- tapply(df$tree_type, df$parks, mean)
+
+c)  mean_parks_by_tree \<- tapply(df$tree_type, df$parks, sum)
+
+d)  B and C
+
+e)  A and B
+
+Correct answer: a
+
+## Question 5
+
+### Part a
+
+-   inputs a list of vectors x, and combines all vector components into a single vector without the unlist() function.
+
+If x is a factor
+
+-   output should be a new factor which combines the levels of the factor elements in the list, including any levels which aren't actually present in the factor.
+
+For mixed-mode lists
+
+-   the output should be of the highest mode hierarchy
+
+```{r}
+## this one is too long
+
+my1_unlist <- function(x){
+  
+  new_x <- numeric(0)
+  
+  ## if not a factor, then levels() is NULL
+  
+  is_fac <- FALSE
+  is_all_fac <- FALSE
+  new_levels <- character(0)
+
+if(is.null(levels(x))){
+    # if true ==> not a factor
+    ## for loop, add to vector
+    for(i in 1:length(x)){
+      for(j in 1:length(x[i])){
+        if(is.character(typeof(levels(x[i])))){
+            new_x <- c(as.character(new_x), as.character(x[i][[j]]))
+       } 
+        else{
+        new_x <- c(new_x, x[i][[j]])
+        }}
+      
+  if(all(!is.null(levels(x[i])))){
+    is_all_fac <- TRUE
+  }}
+  
+  
+  } else {
+    # if this is true, it is a factor
+    for(i in 1:length(x))
+      for(j in 1:length(x[i])){
+      new_x <- c((new_x), x[i][[j]])}
+        
+    new_x <- factor(new_x)
+    levels(new_x) <- levels(x)
+  }
+  if(is_all_fac)
+    new_x <- factor(new_x)
+  new_x
+}
+
+```
+
+
+
+
+
+```{r}
+my_unlist <- function(x) {
+  if (!is.list(x)) {
+    return(x)  # If it's not a list, return as is
+  }
+  
+  unlisted <- NULL
+  for (i in x) {
+    if(all(!is.null(levels(x[i])))){
+      unlisted <- factor(unlisted, as.character(unlisted))
+    } else if (is.list(i)) {
+      unlisted <- c(unlisted, custom_unlist(i))
+    } else {
+      unlisted <- c(unlisted, i)
+    }
+  }
+  
+  return(unlisted)
+}
+
+ttt <- list(c(6,8,"6"), c(9,8,0,8))
+
+## my_unlist(ttt)
+
+ttt2 <- my_unlist(ttt)
+fac_ttt <- factor(ttt2)
+levels(fac_ttt)[5] <- 4
+unlist(ttt)
+my_unlist(ttt)
+```
+```{r}
+## testing the function
+
+my_unlist(list(c(2, 1, 1), c(3, 2, 1), 2))
+
+my_unlist(list(factor(c("a", "a", "b", "c")),
+factor(c("b", "c", "e")), factor(c("a", "d", "b")))) ## does not work for this one
+
+my_unlist(list(factor(c("a", "b")), c(1, 2)))
+my_unlist(list(factor(c("a", "b")), factor(c("b", "c")), c("a", "b"))) 
+```
+
+
+
+### Part b
+
+```{r}
+
+stat_mode <- function(x, first = FALSE){
+ 
+  my_x <- unlist(x)
+  
+  my_x <- table(factor(my_x))
+  my_x  <- as.vector(which(my_x == max(my_x)))
+  if(first == TRUE && length(my_x) > 0){
+    my_x <- my_x[unlist(x)[1]]
+  }
+  
+  ## preserve the class of x
+  
+  if(is.factor(x) || any(sapply(x, is.factor))){
+    my_x <- c(unlist(x)[my_x], levels= levels(x))
+  } else if(is.numeric(x)){
+    my_x <- numeric(my_x)
+  } else if(is.character(my_x)){
+    my_x <- as.character(my_x)
+  }
+
+  my_x
+  }
+
+stat_mode(list(c(2, 1, 1), c(3, 2, 1), 2))
+stat_mode(list(c(2, 1, 1), c(3, 2, 1), 2), first = TRUE)
+stat_mode(list(factor(c("control", "treatment1", "control")),
+factor(c("control", "treatment2"))
+))
+```
+
+### Part c
+
+```{r}
+
+df_summary <- function(x) {
+  n_obs <- nrow(x)
+  n_var <- ncol(x)
+  var_names <- colnames(x)
+  
+  column_data <- list()
+  
+  for (i in var_names) {
+    if (is.character(x[[i]])) {
+      column_data[[i]] <- list(
+        "class" = class(x[[i]]),
+        "modes" = stat_mode(x[[i]]),
+        "mode_count" = sum(x[[i]] == stat_mode(x[[i]]))
+      )
+    } else if (is.numeric(x[[i]])) {
+      column_data[[i]] <- list(
+        "class" = class(x[[i]]),
+        "min" = min(x[[i]], na.rm = TRUE),
+        "mean" = mean(x[[i]], na.rm = TRUE),
+        "max" = max(x[[i]], na.rm = TRUE),
+        "na_count" = sum(is.na(x[[i]]))
+      )
+    }
+  }
+
+  # Sort the list alphabetically
+  column_data <- column_data[order(names(column_data))]
+
+  result <- list(
+    n_obs = n_obs,
+    n_var = n_var,
+    var_names = var_names,
+    column_data = column_data
+  )
+result}
+
+
+```
+
+
+### Part d
+
+```{r}
+
+load("starwars.rdata")
+
+df_summary(starwars)
+
+
+
+```
+
+### Part e
+
+```{r}
+
+##stats_mode(starwars$vehicles)
+
+##max(starwars$vehicles)
+
+
+## i was not able to get df_summary to work
+
+```

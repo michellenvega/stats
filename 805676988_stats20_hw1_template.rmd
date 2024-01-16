@@ -1,0 +1,533 @@
+---
+title: "Stats 20, 23C -- Homework 1"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+### (a)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+"**Sometimes you have to make the hardest climb to see the most beautiful sunrise.** I read that once on an old lady's decorative pillow, but it is really how I feel today. I've climbed a very weird and rocky mountain, and it was a pain in the ass, and my legs are tired, and I'm starving. But *the sun is rising over a sea of love and waffles and possibility.* So *I'm just gonna relax and take a deep breath and enjoy this view for as long as I possibly can*." *--* Leslie Knope (from ***Parks and Recreation***)
+
+### (b)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+| Homework | Midterm | Final Exam | Final Project |
+|---------:|--------:|-----------:|--------------:|
+|      18% |     30% |        40% |           12% |
+
+### (c)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+-   2021
+    -   Fall
+        -   Math 31b: INTEGRTN&INF SERIES
+        -   Comp Sci 1: FRESHMAN CS SEMINAR
+        -   History 12b: NEOLIBERALISM
+        -   Comp Sci 31: INTRO TO COM SCI 1
+    -   Winter
+        -   Comp Sci 32: INTRO TO COM SCI 2
+        -   Math 32a: CALC OF SEVRL VAR
+        -   Math 61: DISCRETE STRUCTURES
+    -   Spring
+        -   Classics 51B: ART&ARCHL-ANCT ROME
+        -   Comp Sci 33: COMPUTER ORGANIZATION
+        -   Math 33a: LINEAR ALGBRA&APPLS
+-   2022
+    -   Fall
+        -   Life Science 15: LIFE-CONCPTS&ISSUES
+        -   Psych 10: INTRODUCTORY PSYCH
+        -   Religion M20: INTRODUCTN TO ISLAM
+    -   Winter
+        -   Psych 195b: INTERNSHIP-COG SCI
+        -   Psych 85: INTRO-COGNITIVE SCI
+        -   Stats 10: INTRO-STAT REASON
+    -   Spring
+        -   Psych 100a: PSYCHOLOGICAL STATS
+        -   Psych 130: DEVELOPMENTAL PSYCH
+        -   Psych 135: SOCIAL PSYCHOLOGY
+-   2023
+    -   Fall
+        -   Stats 20: PROGRAMMING WITH R
+        -   Psych 100b: RESEARCH METH-PSYCH
+        -   Math 33a: LINEAR ALGBRA&APPLS
+
+### (d)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+![](/Users/michellenavarretevega/Downloads/kitten01.jpeg){width="404"}
+
+Source: <https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.marthastewart.com%2F1528224%2Fnew-kitten-care-checklist&psig=AOvVaw3XSquKHLRp5YDy7gdTVP2c&ust=1696604425848000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCKDmjZOW34EDFQAAAAAdAAAAABAE>
+
+## Question 2
+
+### (a)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+In both videos, the people are using instructions and following them to their best ability. In the "Exact Instructions challenge", the Dad purposely messes up, but he doesn't at the same time. He follows the "exact" instructions, but not in the way his kids interpret them. Since they are written, the "exact" instructions can be executed in different ways since there is no visual reference to attribute to each instruction. In the "Schitt's Creek" video, the characters are arguing over how to follow the "fold the cheese" instruction since it is written and they cannot determine a visual reference.
+
+Since the instructions are written, they can be interpreted differently by different people. In terms of code, in my past coding classes, we always received written instructions and pseudo code and I have seen how other students interpret the instructions completely different than I did. Sometimes, one way is not drastically better than the other, but oftentimes one 'method' is a lot more efficient.
+
+### (b)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+**What you need:**
+
+-   2 slices of bread (any type you prefer)
+
+-   2-3 slices of your favorite cheese
+
+-   Stove and pan
+
+**Step 1: Prepare the Bread**
+
+-   Heat up the pan.
+
+-   (Optional) Take one side of each bread slice and spread a thin layer of butter.
+
+-   Place the cheese slices on the bread.
+
+**Step 2: Let's Begin**
+
+-   Place the sandwich in the pan, buttered side down. This is so the outside of the grilled cheese becomes crispy and golden brown.
+
+**Step 3: Flippin'**
+
+-   Allow the sandwich to cook until the bottom side becomes golden brown and the cheese starts to melt.
+
+-   Carefully use a spatula to flip the sandwich over.
+
+-   Cook the other side until it's also golden brown and the cheese is completely melted.
+
+**Step 4: We're at the End**
+
+-   Carefully remove it from the pan and place it on a cutting board or plate.
+
+-   Use a knife to cut it diagonally, making two triangle-shaped halves. Or you can cut it right down the middle. It's up to you!
+
+**Enjoy!!!**
+
+## Question 3
+
+### (a)
+
+<!-- COMPUTE THE QUANTITIES IN THE CODE CHUNK BELOW -->
+
+```{r Question 3a}
+#i
+(6^8)/(16^5)
+
+#ii
+101^(-8/7)
+
+#iii
+8+3*pi-3+(-2)
+
+```
+
+(i) 1.601807
+
+(ii) 0.005120908
+
+(iii) 12.42478
+
+### (b)
+
+<!-- COMPUTE THE QUANTITIES IN THE CODE CHUNK BELOW -->
+
+```{r Question 3b}
+
+#i
+log(54, base=3)
+
+#ii
+exp(exp(sqrt(2)))
+
+#iii
+(exp(pi)+exp(-pi))/2
+
+```
+
+(i) 3.63093
+
+(ii) 61.14514
+
+(iii) 11.59195
+
+### (c)
+
+<!-- COMPUTE THE QUANTITIES IN THE CODE CHUNK BELOW -->
+
+```{r Question 3c}
+# i
+119%/%25
+
+# ii
+119%%25
+```
+
+(i) 4
+
+(ii) 19
+
+## Question 4
+
+### (a)
+
+<!-- CREATE THE OBJECTS IN THE CODE CHUNK BELOW -->
+
+<!-- NAME THE OBJECTS EXACTLY AS STATED IN THE ASSIGNMENT -->
+
+```{r Question 4a}
+
+vol_1 <- (4/3)*(1^3)*pi
+vol_4 <- (4/3)*(4^3)*pi
+
+vol_1
+vol_4
+```
+
+(i) vol_1 = 4.18879
+
+(ii) vol_4 = 268.0826
+
+### (b)
+
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+
+```{r Question 4b}
+
+## find volume of a sphere with radius r
+## default is 1
+
+vol_sphere <- function(r = 1) {
+   (4/3)*(r^3)*pi
+}
+
+vol_sphere()
+
+```
+
+### (c)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 4c}
+vol_sphere(1)
+
+vol_sphere(4)
+```
+
+(i) vol_sphere(1) = 4.18879 = vol_1
+
+(ii) vol_sphere(4) = 268.0826 = vol_4
+
+## Question 5
+
+### (a)
+
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+
+**READ THE ENTIRE THING**
+
+```{r Question 5a}
+
+z_prop <- function(x, n, p0) {
+
+  p_hat <- (x/n)
+  
+  statistic_numerator <- p_hat - p0
+  
+  statistic_denominator <- sqrt((p0*(1-p0))/n)
+  
+  z_statistic <- (statistic_numerator/statistic_denominator)
+
+  
+}
+
+```
+
+### (b)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 5b}
+
+ z_population1 <- z_prop(10, 13, 0.60)
+ z_population1
+
+```
+
+z-statistic = 1.245505
+
+### (c)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+This z-statistic is 1.245505. This means that the sample proportion, 10/13, is 1.245505 standard deviations above p0, which is .60. This means that the sample result is higher than what we would expect if the true population proportion was truly 0.60.
+
+### (d)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 5d}
+ z_population2 <- z_prop(30, 39, 0.60)
+ z_population2
+```
+
+<!-- ENTER YOUR EXPLANATION BELOW -->
+
+The z-statistic is 2.157277, which means that the sample proportion, which is 30/39, is 2.157277 standard deviations higher than the hypothesized population proportion.
+
+The z-statistic has changed because the second sample is bigger than the first sample, which means there is a smaller standard error. With a smaller standard error, the z-statistic becomes larger because it represents a more precise estimate of the population proportion.
+
+In the second sample, the sample proportion is larger (30/39) than in the first sample (10/13). The difference between the sample proportion and the hypothesized population proportion is what leads to a larger z-statistic. The larger z-statistic indicates that the second sample's result is further from the hypothesized proportion and potentially more statistically significant.
+
+## Question 6
+
+### (a)
+
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+
+```{r Question 6a}
+
+
+
+lease_calc <- function(msrp, price, down, n = 36, res = 0.60, mf = 0.001, tax = 0.095) {
+  
+  # sale price of the car - down payment
+  capitalized_cost <- (price - down)
+  
+  # manufacturer's suggested retail price * residual percentage
+  residual_value <- (msrp * res)
+
+  # difference of capitalized cost and residual value then divided by the number of months
+  monthly_depreciation <- ((capitalized_cost - residual_value)/n)
+  
+  # capitalized cost plus residual value then multiplied by the money factor
+  monthly_finance <- (capitalized_cost + residual_value) * mf
+  
+  # monthly depreciation + monthly finance charge
+  sub_total <- monthly_depreciation + monthly_finance
+  
+  # sub-total plus taxes
+  total <- sub_total + (tax * sub_total)
+
+  total
+}
+
+
+```
+
+### (b)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 6b}
+
+monthly_payment <- lease_calc (31495, 29895, 2500, 36, .52, 0.0016, 0.095)
+monthly_payment
+
+```
+
+Monthly lease payment: $411.81 rounded to nearest hundredth.
+
+## Question 7
+
+### (a)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+The minimum number of coins to get 47 cents is: 1 quarter, 2 dimes, and 2 cents; which is 5 coins.
+
+### (b)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+We want to start with quarters and move our way down to pennies. We want to know what is the maximum of quarters needed, maximum of dimes needed, ... , maximum of pennies.
+
+Let's have the cents amount as 'total'.
+
+1.  Calculate the number of quarters
+2.  Calculate the number of dimes using the remaining amount after using quarters
+3.  Calculate the number of nickels using the remaining amount after using dimes and quarters
+4.  The remaining amount is the number of pennies
+
+Then you add the numbers of each coin to find the total of coins.
+
+### (c)
+
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+
+```{r Question 7c}
+  
+  get_minimum_coins <- function(cents){
+    
+  num_of_quarters <- 0
+  num_of_dimes <- 0
+  num_of_nickels <- 0
+  num_of_pennies <- 0
+  
+  num_of_quarters <- cents %/% 25
+  
+  num_of_dimes <- (cents %% 25) %/% (10)
+  
+  num_of_nickels <- ((cents %% 25) %% 10) %/% (5)
+  
+  remaining <- ((cents %% 25) %% 10)
+  
+  num_of_pennies <- remaining %% 5
+
+  total <- num_of_quarters + num_of_dimes + num_of_nickels + num_of_pennies
+  total
+}
+```
+
+### (d)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 7d}
+
+get_minimum_coins(31)
+get_minimum_coins(48)
+get_minimum_coins(139)
+
+```
+
+(i) <!-- ENTER YOUR ANSWER TO THE RIGHT OF THIS OR BELOW -->
+
+    3
+
+(ii) <!-- ENTER YOUR ANSWER TO THE RIGHT OF THIS OR BELOW -->
+
+     6
+
+(iii) <!-- ENTER YOUR ANSWER TO THE RIGHT OF THIS OR BELOW -->
+
+      10
+
+### (e)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 7e}
+
+# My original plan was: 
+## Go through all the numbers from 1-99 and collect the number of coins for each number in a vector 
+## Get the maximum number of coins, which is 9
+## Gives us a vector with true/false of which numbers have the max number of coins. 
+## It shows that there are only two numbers. Index 94 and 99.
+## To find the index, I could not figure out how to do it with the material and code that has been taught so far in class. I manually counted the 'TRUE' values in the resulting vector to figure out that the answer is 99, while 94 has the same number of coins as well. 
+
+## I could not figure out how to use code (what we went over in only chapter 1) to receive a result that gives us the exact number with the maximum coins without inputting the answer I had logically came to.
+
+get_minimum_coins(94)
+get_minimum_coins(99)
+
+```
+
+<!-- ENTER YOUR EXPLANATION BELOW -->
+
+We should look at the maximum number of each type of coin we can have without it going over 100 cents. Multiples of 5 and 10 have low number of coins, so we must look for ones under 5 and over 0. Anything over 5 will require us to use a nickel instead of pennies. Now, we can get to the max with quarters, dimes, and nickels before moving to pennies. For quarters, the max is 3. For dimes, after 100-75 (which is 3 quarters), we have 25 cents. Without hitting 100, the max for dimes is 2. Now, the remaining about we have is 100-75-20 = 5. In summary, we have 3 quarters and 2 dimes, which brings us to 95 cents. Next, we add 4 pennies, since we do not want to go over or equal 100. Thus far, the number of coins we have is 3 quarters, 2 dimes, and 4 pennies, which is a total of 9 coins. This leads us to a grand total of 99 cents, with the most minimum of coins from 1-100 being 9 coins.
+
+The same process applies for 94, with 9 coins as well.
+
+## Question 8
+
+<!-- THIS IS THE CODE GIVEN IN THE ASSIGNMENT -->
+
+```{r Question 8 Background, echo = TRUE}
+x <- 3
+y <- 4
+
+exp1 <- function() {
+  x^y
+}
+exp2 <- function(x = 2) {
+  x^y
+}
+exp_y <- function(x) {
+  function(y) {
+    x^y
+  }
+}
+
+exp_y()
+
+
+
+
+```
+
+### (a)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+In exp1, since the function does not have its own parameters, it uses the global variables x and y.
+
+In exp2, the function has a local parameter of x, but not y. Thus, it uses the local variable x and the global variable y.
+
+This results in differing answers since exp2 has a default x value of 2, while the global x is 3. If exp2 is exp2(3), then the answer of exp1() will equal, however that is only one case. Plus, exp2 will mainly have a different value for the local x compared to the global x.
+
+### (b)
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+It does not output a numeric value. It outputs:
+
+*function(y) { x\^y }*
+
+*\<environment: 0x7fbb08834438\>*
+
+It is essentially returning another function and its environment.
+
+Thus, if we want to access the inner function, we use exp_y and insert a value with the x parameter. The result is the inner function WITH the x parameter value given beforehand. Then, we have the y parameter for this newly assigned function, and that is where we give the y value. The result is the returning value of the newly assigned function. So, it is essentially a two-step process.
+
+```{r}
+
+## New object is the inner function of exp_y and now we assign the x value
+exp_y_inner <- exp_y(15)
+
+## Now we assign the y value and get the result
+exp_y_inner(4)
+
+```
+
+### (c)
+
+<!-- USE THE CODE CHUNK BELOW -->
+
+```{r Question 8c}
+
+# Without creating any new objects
+
+(exp_y(15))(4)
+
+```
+
+Instead of assigning exp_y(15) to a new object, we just use it in place of where the object would be since it returns a function and we are not giving that returned function its y parameter.
+
+The fourth power of 15 is 50625.

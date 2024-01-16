@@ -1,0 +1,723 @@
+---
+title: "Stats 20, F23 -- Homework 4"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+```{r}
+
+my_t <- function(x){
+  
+  ## we want to get the columns and bind them as rows
+  new_x <- NULL
+  
+  if(length(ncol(x)) != 0 ){
+  my_length <- 1:ncol(x)
+  
+    for(i in my_length){
+    x[,i]
+    new_x <- rbind(new_x, x[,i])
+    }
+  
+    }
+  else {
+    new_x <- cbind(x)
+    }
+  
+  new_x
+}
+
+my_matrix <- cbind(c(1,2,3), c(4,5,6), c(7,8,9))
+my_matrix
+
+
+my_vec <- 1:3
+my_vec
+new_vec <- my_t(my_vec)
+new_vec
+
+her_vec <- cbind(1:3)
+her_vec
+his_vec <- my_t(her_vec)
+his_vec
+```
+
+
+
+
+## Question 2
+
+### Part a
+
+```{r}
+
+my_cor <- function(x,y, use = "everything") {
+  if(use == "pairwise.complete.obs"){
+      x <- x[!is.na(x)]
+      y <- y[!is.na(y)]
+
+  } 
+  
+  
+  numerator <- (sum((x-mean(x))*(y-mean(y))))
+  den_x <- sqrt(sum((x-mean(x))^2))
+  den_y <- sqrt(sum((y-mean(y))^2))
+  denominator <- den_x*den_y
+  
+  
+  numerator/denominator
+}
+
+a <- 1:3
+b <- 4:6
+my_cor(a,b)
+cor(a,b)
+
+
+a1 <- c(6,2,9)
+b1 <- 4:6
+my_cor(a1,b1, use = "pairwise.complete.obs")
+cor(a1,b1, use = "pairwise")
+```
+
+### Part b
+
+
+```{r}
+
+lin_reg <- function(x,y, use = "everything") {
+  
+   if(use == "pairwise.complete.obs"){
+      x <- x[!is.na(x)]
+      y <- y[!is.na(y)]
+
+    } 
+  
+  
+  b <- (cor(x,y) * (sd(y)/sd(x)))
+  
+  a <- mean(y) - (b*mean(x))
+
+  
+  c(a,b)
+  
+}
+
+```
+
+
+
+
+### Part c
+
+
+```{r}
+
+
+hw4_height <- c(61:64,66,68)
+hw4_weight <- c(104,110,125,141,160,170)
+
+hw4_lin <- lin_reg(hw4_height, hw4_weight)
+
+hw4_equation <- c("y =", hw4_lin[1], "-", hw4_lin[2], "x")
+hw4_equation
+
+```
+
+the equation is 
+weight = -510.647058823529 - 10.0882352941176*height
+
+### Part d
+
+```{r}
+
+linreg_mat <- function(x,y){
+  
+  design_matrix <- cbind(rep(1,length(x)),x)
+  
+  design_transpose <- my_t(design_matrix)
+  
+  trans_design <- design_transpose %*% design_matrix
+  
+  inverse <- solve(trans_design)
+
+  output <- inverse %*% design_transpose %*% y
+  
+  output
+  
+}
+
+```
+
+### Part e
+
+```{r}
+linreg_mat(hw4_height,hw4_weight)
+```
+
+As in part c, the b is -510.64706 and the a is 10.08824. 
+
+### Part f
+
+The slope coefficient is: 10.0882352941176.
+
+This means that for every unit value of the height, the weight is 10.0882352941176 times the height. 
+
+It represents the change in weight for every unit value change in height.
+
+
+## Question 3
+
+### Part a
+
+```{r}
+`%m%` <- function(A,B){
+  
+  if(ncol(A) != nrow(B))
+    stop("Matrices are not conformable.")
+  
+  n <- nrow(A)
+  m <- ncol(B)
+  output <- matrix(0, n, m)
+  
+    for (i in 1:n) {
+    for (k in 1:m) {
+      output[i, k] <- sum(A[i,] * B[,k])
+    }
+  }
+  
+  output
+  
+  ## should output the matrix product of A and B
+}
+
+a <- matrix(1:6, nrow = 2)
+b <- matrix(7:12, ncol = 2)
+
+a%m%b
+a%*%b
+
+```
+### Part b
+
+```{r}
+
+X <- rbind(c(6,5,4), c(3,2,1))
+Y <- cbind(c(1,2,3), c(4,5,6), c(7,8,9))
+
+X
+Y
+
+
+
+X%m%Y
+
+X%*%Y
+
+```
+
+
+
+## Question 4
+
+### Part a
+
+```{r}
+
+`%^%` <- function(A,k){
+  n <- nrow(A)
+  result <- A
+  
+  if(k == 1){
+    result <- A
+    message(result)
+  } else if(k == 0){
+    result<- diag(n)
+  }
+  else if (k>1) {
+    result <- A
+  for(i in 2:k) {
+    result <- result %m% A
+  }
+}
+  result
+}
+
+a <- matrix(1:4, nrow = 2)
+a%*%a
+s <- 2
+a%^%s
+
+k <- 5
+a%^%k
+a%*%a%*%a%*%a%*%a
+
+
+```
+## Part b
+
+```{r}
+
+Z <- rbind(c(0.2, 0.7, 0.1), c(0.6, 0.2, 0.2), c(0.4, 0.1, 0.5))
+Z
+## k = 0
+Z%^%0
+
+
+## k = 5
+k <- 5
+Z%^%k
+
+result <- Z
+k <- 5
+
+  for(i in 2:k) {
+    result <- result %m% Z
+  }
+result
+
+## k = 50
+k <- 50
+Z%^%k
+
+result <- Z
+
+
+  for(i in 2:k) {
+    result <- result %m% Z
+  }
+result
+
+## k = 500
+k <- 500
+Z%^%k
+
+result <- Z
+
+
+  for(i in 2:k) {
+    result <- result %m% Z
+  }
+result
+
+```
+## Question 5
+
+**I am going to assume that the inputs are all logical vectors and matrices**
+
+GOAL: returns the indices of TRUE values in a logical vector or matrix
+
+-   have a sequence of length of the vec/matrix
+
+-   logical index, make indices false into NA
+
+/// implement the arr.ind argument /// 
+optionally return two dimensional indices of TRUE values in a logical matrix
+
+
+
+```{r}
+
+my_which <- function(x, arr.ind = FALSE){
+  new_output <- integer(0)
+
+  if(length(x) == 0)
+    new_output <- logical(0)
+  else if(length(x) == 1)
+    new_output <- integer(0)
+  else if (TRUE){
+  ## check if it is a matrix and argument is set to true
+  output <- x
+  
+  if(arr.ind == TRUE && length(dim(x)) == 2){
+    num_rows <- 1:nrow(x)
+    num_cols <- 1:ncol(x)
+    rownames(output) <- c(1:nrow(x))
+    colnames(output) <- c(1:ncol(x))
+    ## let's try a for-loop
+    new_output <- integer(0)
+    for(i in num_rows){
+      for(j in num_cols){
+        
+        if(x[i,j] == TRUE && length(new_output) == 0 )
+          new_output <- c(i, j)
+        else if(x[i,j] == TRUE)
+          new_output <- c(new_output, c(i, j))
+      }
+      
+    }
+    
+    new_output <- matrix(new_output, ncol = 2, byrow = TRUE)
+    colnames(new_output) <- c("row", "col")}
+                    
+   else {
+  
+  my_len <- 1:length(x)
+  
+  new_output <- my_len[x]
+  
+  }
+  }
+  new_output
+  
+}
+
+test <- cbind(c(TRUE, TRUE), c(FALSE,TRUE))
+
+##my_which(test)
+
+my_which(test, arr.ind = TRUE)
+
+which(test, arr.ind = TRUE)
+
+my_which(logical(1))
+which(logical(1))
+
+my_which(c(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE))
+which(c(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE))
+
+
+```
+
+
+## Question 6
+
+```{r}
+load("mlb.RData")
+
+```
+
+### Part a
+
+
+i. Find the maximum number of hits from each team
+
+```{r}
+
+tapply(hit, team, max)
+
+```
+
+ii. Find number of players on the team
+
+-   chapter 6: how would u find out how many observations there are 'for each team'? 
+```{r}
+
+tapply(hit, team, length)
+table(team)
+
+```
+
+iii. Using one command and no subsetting, find the number of players on each team with at least one home run
+
+hr > 1
+
+```{r}
+
+tapply(hr > 0, team, sum)
+
+
+
+```
+
+
+### Part b
+i. Using one command, (find the highest "batting average" for each team) among players with at least 100 at bats
+
+players with at aleast 100 bats
+find the average of those
+display for each team
+
+```{r}
+tapply(hit/ab,list(team, ab>99),max)
+
+## this was the hardest lol, not sure if it is right
+## we want max, we want to compare team and ab >99
+## from that list, we want hits/ab
+
+```
+
+ii. Using one command, find the batting average for each team.
+
+```{r}
+
+tapply(hit/ab,team,mean, na.rm = TRUE)
+
+```
+### Part c
+
+Find the average number of home runs for each position in each league. Which position has the largest difference between leagues?
+
+```{r}
+tapply(hr, list(league,pos), mean)
+
+```
+
+Catcher: less than 1
+Centerfield: 0.69
+1.9
+0.8
+right: 4.17
+shrt: 1.57
+
+
+
+Rightfield has the largest difference between leagues. 
+
+
+### Part d
+
+Using one command, compute the median number of players for each position on any team.
+
+
+```{r}
+
+
+length(table(pos)) ## total
+
+tapply(table(pos), list(1:length(table(pos))), FUN=median, na.rm = TRUE)
+
+
+```
+
+This is the only way I was able to find it. I was not able to fix the way it is presented. i think I might need to do something with the index argument.
+
+## Question 7
+
+
+### Part a
+
+returns: a matrix of integers indicating the row number (i.e., the ijth element is equal to i) without the row() function
+output of my_row(x) and row(x) should be identical for any matrix x.
+
+```{r}
+
+X <- cbind(c(9,3,4), c(2,5,1))
+
+row(X)
+
+my_row <- function(A){
+  
+  num_col <- 1:ncol(A)
+  num_row <- 1:nrow(A)
+  
+  for(i in num_row)
+    for(j in num_col){
+      
+      A[i,j] <- i }
+  A
+}
+
+my_row(X)
+
+
+
+```
+
+
+### Part b
+
+```{r}
+
+my_col <- function(A){
+  
+  
+  num_col <- 1:ncol(A)
+  num_row <- 1:nrow(A)
+  
+  for(i in num_row)
+    for(j in num_col){
+      
+      A[i,j] <- j }
+  A
+  
+}
+
+X <- cbind(c(9,3,4), c(2,5,1))
+col(X)
+my_col(X)
+
+
+```
+
+
+### Part c
+
+```{r}
+test_my_diag <- function(x, nrow=NULL, ncol=NULL){
+  
+
+  if(missing(x) && !is.null(nrow))
+    message("return identity matrix")
+  else if(length(x) == 1 && is.null(nrow) && is.null(ncol)){
+    message("second case done")
+    
+  } else if (is.numeric(x) && (length(x)>1 || !is.null(nrow) || !is.null(ncol))){
+    
+    message("third case!!!!")
+  }
+
+
+}
+
+m <- cbind(1:2,5:7)
+  
+#case 1
+test_my_diag(nrow = 2)
+
+#case 2
+test_my_diag(2)
+
+#case 3
+test_my_diag(m)
+  
+  
+  
+```
+
+
+
+
+returning identity matrix: 
+
+```{r}
+
+my_diag <- function(x, nrow=NULL, ncol=NULL){
+  
+  output <- integer(0)
+  
+  if(missing(x) && !is.null(nrow)){
+    identity_matrix <- matrix(0,nrow,nrow)
+    for (i in 1:nrow) {
+       for (j in 1:nrow) {
+       if (i == j) {
+          identity_matrix[i, j] <- 1
+         }
+       }
+    }
+    output <- identity_matrix
+  }else if(length(x) == 1 && is.null(nrow) && is.null(ncol)){
+    
+    identity_matrix <- matrix(0,x,x)
+    for (i in 1:x) {
+       for (j in 1:x) {
+       if (i == j) {
+          identity_matrix[i, j] <- 1
+         }
+       }
+    }
+        output <- identity_matrix
+    
+  } else if (is.numeric(x) && (length(x)>1 || !is.null(nrow) || !is.null(ncol))){
+    
+    my_row <- nrow(x)
+    my_col <- ncol(x)
+    num_diag <- x[1,1]
+          for (i in 2:my_row) {
+             for (j in 2:my_col) {
+             if (i == j) {
+                num_diag <- c(num_diag, x[i,j])
+               }
+             }
+          }  
+            output <- num_diag
+
+    }
+
+output
+}
+my_diag(nrow = 2)
+diag(nrow=2)
+
+
+my_diag(2)
+diag(2)
+
+m <- cbind(1:2,5:7)
+my_diag(m)
+diag(m)
+```
+
+
+
+## Question 8
+
+
+```{r}
+
+load("votes.RData")
+
+```
+
+### Part a
+
+*Pseudocode (or outline) a function that inputs a matrix of ranked choice votes and returns a matrix of results*
+
+(00:34):
+In a ranked choice voting election, a candidate needs to earn more than half of the votes to win. 
+All first choices are counted and if a candidate has a majority, then they win just like any other election. 
+If not the candidate with the fewest votes is eliminated and voters who picked that candidate as a number one, will have their votes count for their next choice.
+(00:54):
+This process continues until a candidate earns a majority and is declared the winner.
+
+
+
+Input a matrix. 
+
+-   ranked choice votes
+
+Check if any candidate earned more than half of votes.
+-   If yes, they win.
+  
+if not
+-   Eliminate least voted
+
+
+Repeat process until a candidate has over half votes
+
+
+Output a matrix
+
+-   results (?)
+
+
+
+### Part b
+
+input is a matrix with col as names of choices
+rows are votes for that choice
+
+
+```{r}
+
+tally_rcv <- function(x){
+    total <- sum(apply(x, 2, sum))
+    new_x <- apply(x, 2, sum)/total
+    new_x <- new_x*100
+    new_x
+    
+    ## new_x is percentages
+    
+    # check who has highest
+    
+    ## if not over 50, then eliminate lowest and do again
+        ## find total again and repeat the process.
+  
+}
+
+
+tally_rcv(votes)
+
+```
+
+## part c
+
+incomplete

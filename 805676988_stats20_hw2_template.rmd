@@ -1,0 +1,421 @@
+---
+title: "Stats 20, F23 -- Homework 2"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+```{r Question 1 Background}
+mixed1 <- c(TRUE, FALSE, FALSE, TRUE, 4, 0, 3)
+mixed1
+mixed2 <- c(TRUE, FALSE, FALSE, TRUE, 4, 0, "3")
+mixed2
+mixed3 <- c(c(TRUE, FALSE, FALSE, TRUE, 4, 0), "3")
+mixed3
+```
+
+### (a)
+<!-- ENTER YOUR ANSWER BELOW -->
+In mixed2, all elements are automatically changed to characters because it's a mixed-type vector. In mixed3, the vector that is nested is a numeric vector. Thus, when the character "3" is added to the vector at the end, R tries to maintain a consistent data type for the vector and converts the numeric and logical values to characters. 
+
+If the values are not nested, then we can ensure a mixed vector. This is because of the mode hierarchy: logical < numeric < character 
+
+
+### (b)
+<!-- ENTER YOUR ANSWER BELOW, IT CAN BE JUST THE COMMAND. NO NEED TO STORE AN OBJECT -->
+```{r Question 1b}
+c(TRUE, FALSE, FALSE, TRUE, 4, 0, c("3"))
+
+```
+
+## Question 2
+
+### (a)
+<!-- ENTER YOUR ANSWER BELOW -->
+```{r}
+as.numeric(mixed2)
+as.numeric(mixed3)
+```
+
+
+Mixed 2 is a character vector where when it was formed, the vector was intended to be of different data types. However, since the values were assigned to one vector together, the logical and numeric values were instantly converted to characters. On the other hand, for mixed 3, the process was a bit different. The inner nested vector is a numeric one, while the outer vector is a character one.
+
+When both resulting vectors were coerced into character vectors, some values were represented differently. For example, in mixed 2, the logical and numeric values were converted straight into a character form, thus, no change was done to the value and the TRUE/FALSE simply transformed into "TRUE"/"FALSE". On the other hand, in mixed 3, the true ans false were coerced into 1/0 due to the inner nested vector being a numeric one. 
+
+Now, when it comes to using as.numeric(), the values and the way they are presented matter. All values are considered characters at this point. However, now when we try to coerce them into being numeric, the "TRUE"/"FALSE" characters from mixed 2 are not easily translated to numeric since it started off as a logical but is now simply a string of characters and not binary representations as in mixed 3. With mixed 3, the values that were inputted, some came from a numeric vector (inner nested vector) and the logical values were coerced into their binary numeric form, so it is fairly easily to convert them back. That's why mixed2 shows an error and mixed 3 does not.
+
+So both vectors, although they seem to contain the same values, due to the way they were assigned into their prospective vectors, they are presented in the vector in different ways. Thus, this has an impact on the result of the function as.numeric() on them.
+
+
+
+### (b)
+<!-- ENTER YOUR ANSWER BELOW -->
+
+```{r}
+as.logical(mixed2)
+as.logical(mixed3)
+```
+
+So both vectors, although they seem to contain the same values, due to the way they were assigned into their prospective vectors, they are presented in the vector in different ways. Thus, this has an impact on the result of the function as.numeric() on them.
+
+'NA' means 'not available', which means that there is a value that exists, but it is just unknown. 
+Now, what the as.logical() function does to a vector, is convert its values into logicals. This is especially easy when it comes to "TRUE" and "FALSE" values. I would assume that any number when used in this function would be difficult to coerce into a logical since there are many numbers and it is quite difficult if they were to taking binary numbers into account when converting. Now, when we encounter numeric and character elements, the function faces challenges in converting them to logical values, leading to the appearance of "NA."
+
+mixed3 is structured differently, with nested elements in the vector, where the nested vector is treated as one single element. It contains a mix of logical and numeric values, along with one character element, and when you apply as.logical() to it, R treats the nested structure as a whole, and this can lead to unexpected results, as the function attempts to convert the entire vector to logical values. In this process, individual values may be treated differently, and "NA" values . Since there's a nested vector being treated as a single element and the character "3" is present, it results in the appearance of "NA" values in the output.
+
+In conclusion, the function expects the values to be exactly: "TRUE" and "FALSE
+
+
+
+### (c)
+<!-- ENTER YOUR ANSWER BELOW, IT CAN BE JUST THE COMMAND. NO NEED TO STORE AN OBJECT -->
+Meaningul mixed 3 logical values
+```{r Question 2c}
+
+as.logical(as.numeric(mixed3))
+
+
+
+
+```
+
+## Question 3
+
+### (a)
+<!-- ENTER YOUR ANSWERS BELOW, THEY CAN BE JUST THE COMMANDS. NO NEED TO STORE OBJECTs -->
+```{r Question 3a}
+## i
+seq(1,25, 1)
+
+## ii
+1:25
+
+## iii
+seq_len(25)
+
+
+##iv
+my_example <- c(1:25)
+seq_along(my_example)
+
+```
+
+### (b)
+<!-- ENTER YOUR ANSWERS BELOW, THEY CAN BE JUST THE COMMANDS. NO NEED TO STORE OBJECTs -->
+```{r Question 3b}
+  
+## i 
+seq(8.0,2.0,-0.5)
+
+## ii
+rep(c(-1,0,3,5), 5)
+
+### iii
+rep(5:1, 5)
+
+## iv
+rep(c(5:1), c(5,5,5,5,5))
+
+## v
+rep(10:6, c(1:5))
+
+```
+
+### (c)
+<!-- ENTER YOUR ANSWER BELOW -->
+
+I see the pattern as there are five cycles, the first cycle starting with ten and then decreasing to 6. Then for each cycle after that, the start of the next cycle is -1 the start of the cycle before it, same with the end. 
+
+This pattern is different than the ones in b because they have different numbers for each cycle, and seq and rep depend on a set vector, while the pattern given seems to not have one. From my perspective, seq and rep alone cannot replicate this. 
+
+<!-- USE THE CODE CHUNK BELOW IF YOU'D LIKE -->
+```{r Question 3c}
+
+##my_vec <- rep(10:6, rep(5,5)) - rep(0:4,4)
+
+##another_vec <- c(10,9,8,7, 6, 9, 8, 7, 6, 5, 8, 7, 6, 5, 4, 7, 6, 5, 4, 3, 6, 5, 4, 3, 2)
+
+##my_vec == another_vec
+
+rep(10:6, rep(5,5)) - rep(0:4,4)
+```
+
+
+## Question 4
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 4a}
+k <- 0:100
+sin(k*pi)
+```
+<!-- ENTER YOUR EXPLANATION BELOW -->
+
+In R, our answer for any sin of a value that is supposed to be 0, it will not be 0, but it will be very close to it because of the finite precision of floating-point numbers. It does match around what we would expect mathematically. It is simply presented differently because of how R treats floating-point numbers. 
+
+## Question 5
+
+### (a)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 5a}
+my_skew <- function(x){
+  n <- length(x)
+  
+  my_mean <- (1/n)*sum(x)
+
+  inner_numerator <- (x-my_mean)^3
+  
+  numerator <- (sqrt(n)) * sum(inner_numerator)
+  
+  inner_denominator <- sum((x-my_mean)^2)
+  
+  denominator <- (inner_denominator)^(3/2)
+  
+  skew <- numerator/denominator
+  
+  skew
+  
+}
+
+```
+
+### (b)
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 5b}
+running_times <-  c(51, 40, 57, 34, 47, 50, 50, 56, 41, 38)
+
+my_skew(running_times)
+```
+
+Since the skew is negative, it suggests a mild left-skew, which means that the distribution is slightly shifted to the left. But, the value of 0.1615082 indicates that the skewness is not extreme. Chris' running times suggest that he has a few instances where he completes the 10k significantly faster, but the majority of the time he takes longer.
+
+
+
+
+### (c)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 5c}
+
+my_skew_one <- function(x) {
+  
+  n <- length(x)
+  
+  my_mean <- (1/n)*sum(x)
+  
+  inner_numerator <- sum(x^3) - ((3*my_mean)*sum(x^2)) + (2*n)*(my_mean^3)
+  
+  inner_denominator <- sum(x^2) - n*(my_mean^2)
+  
+  numerator <- sqrt(n) * inner_numerator
+  
+  denominator <- inner_denominator^(3/2)
+  
+  skew <- numerator/denominator
+  
+  skew
+}
+
+my_skew_one(running_times)
+
+```
+
+### (d)
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 5d}
+
+
+ten_running_times <- (10^10) * running_times
+
+my_skew(ten_running_times)
+
+my_skew_one(ten_running_times)
+
+
+
+```
+<!-- ENTER YOUR EXPLANATION BELOW -->
+
+The answers do not differ than my answers in b and c. When calculating skewness, we are measuring the shape of the distribution. Multiplication by a number only makes it scaled and it does not change the distribution whatsoever. Thus, that is why the answers are the same even when multiplying by 10^10. 
+
+
+### (e)
+<!-- USE THE CODE CHUNK BELOW IF YOU'D LIKE -->
+```{r Question 5e}
+my_skew(running_times) - my_skew_one(running_times)
+```
+
+<!-- ENTER YOUR ANSWER BELOW -->
+
+
+In R, even though we expect an answer to be 0, it will not be 0, but it will be very close to it because of the finite precision of floating-point numbers. It does match around what we would expect mathematically. It is like this because of how R treats double finite precision and the rounding errors that may appear. 
+
+
+## Question 6
+
+### (a)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+
+case: length of 0
+
+```{r Question 6a}
+
+my_length <- function(x) {
+  
+  ## this one took me a while
+  ## my logic was to make every element in x 1
+  ## then each 1 will count for each index
+  ## then we just add all the elements
+  ## and that gives us the length
+
+  x[] <- 1
+  x <- as.numeric(x)
+  len <- sum(x)
+  
+  len
+}
+
+```
+
+### (b)
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 6b}
+
+## i 
+length(numeric(0)) == my_length(numeric(0))
+
+length(seq(1,99,by=2)) == my_length(seq(1,99,by=2))
+
+length(c("waffles", "friends", "work")) == my_length(c("waffles", "friends", "work"))
+```
+
+## Question 7
+
+### (a)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 7a}
+
+my_rev <- function(x) {
+  
+  ## create a new vector with indices having elements
+  ## opposite of x
+  
+  new_x <- x[length(x):0]
+
+  new_x
+}
+
+my_rev(numeric(0))
+
+```
+
+### (b)
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 7b}
+rev(seq(1, 99, by = 2)) == my_rev(seq(1, 99, by = 2))
+
+rev(numeric(0)) 
+my_rev(numeric(0))
+
+rev(c("waffles", "friends", "work"))
+my_rev(c("waffles", "friends", "work"))
+```
+
+## Question 8
+
+### (a)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 8a}
+
+front <- function(x, n) {
+  
+  ## here, I had done other methods but it would not work in all cases
+  ## my logic is that we want the vector /without/ the elements after n
+  ## so from n+1 and then to the end of the vector (length)
+  ## i did max between n and length because when n > length, and
+  ## i remove up to the index of length(x), the last index will also be 
+  ## removed instead of returning the /entire/ vector
+  
+  x[-((n+1):max(n,length(x)))]
+
+}
+
+front(c("waffles", "friends", "work"), 6)
+front(numeric(0), 6) ## not sure if it works for this one
+front(seq(1, 99, by = 2), 0)
+
+
+```
+
+### (b)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 8b}
+back <- function(x,n){
+
+  ## need to find the index
+  ## logic is that we have length and want to back track n times
+  ## we then add one to get the correct index
+  ## i did max between that and 0 because if n > length then we
+  ## just want to return the entire vector
+  
+  first_index <- max(length(x)-n+1,0)
+  first_index
+  x[first_index:length(x)]
+  }
+
+back(c("waffles", "friends", "work"), 6)
+back(numeric(0), 6) ## not sure if it works for this one
+back(seq(1, 99, by = 2), 6)
+
+```
+
+### (c)
+<!-- CREATE THE FUNCTION IN THE CODE CHUNK BELOW -->
+<!-- NAME THE FUNCTION AND ITS INPUTS EXACTLY AS STATED IN THE ASSIGNENT -->
+```{r Question 8c}
+
+insert_at <- function(x, values, at){
+  
+  empty <- c(0,0)
+  begin_x <- front(c(x, empty), at-1)
+  
+  end_x <- x[(length(begin_x)+1):length(x)]
+  
+  new_vec <- rep(0, length(begin_x)+length(values))
+  
+  new_vec[1:at-1] <- begin_x
+  
+  new_vec <- c(new_vec, end_x)
+  
+  new_vec <- new_vec[1:(length(x)+length(values))]
+  
+  new_vec
+  
+}
+
+
+
+
+
+```
+
+### (d)
+<!-- USE THE CODE CHUNK BELOW -->
+```{r Question 8d}
+insert_at(1:5, c(0, 0, 0), at = 1)
+insert_at(1:5, c(0, 0, 0), at = 3)
+insert_at(1:5, c(0, 0, 0), at = 5)
+insert_at(1:5, c(0, 0, 0), at = 6) 
+
+
+```
