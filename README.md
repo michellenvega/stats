@@ -1,1 +1,3 @@
-Stats 20 Homework and Assignment for Fall Quarter 2023
+Stats: Introduction to Statistical Programming with R
+
+Homework and Assignments for Fall 2023
