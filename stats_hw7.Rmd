@@ -1,0 +1,211 @@
+---
+title: "Stats 20, F23 -- Homework 7"
+author: "Michelle Navarrete Vega -- 805676988"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+### Part a
+
+```{r}
+
+births <- read.csv("births.csv", stringsAsFactors = TRUE)
+is.factor(births$Habit)
+
+```
+
+### Part b
+
+```{r}
+
+table(births$Habit)
+
+names(table(births$Habit)[1])
+
+levels(births$Habit)
+
+
+```
+
+
+There are 6 observations in the category where there is no information regarding the smoking habits of the mother. The name of this category is "" blank.
+
+
+### Part c
+
+```{r}
+
+plot(births$Habit, col = "lightgreen")
+
+```
+
+### Part d
+
+```{r}
+
+known_habit_data <- births[births$Habit %in% c("NonSmoker", "Smoker"), ]
+
+known_habit_data$Habit <- droplevels(known_habit_data$Habit)
+
+levels(known_habit_data$Habit)
+
+```
+
+
+### Part e
+
+```{r}
+
+boxplot(known_habit_data$weight~known_habit_data$Habit)
+
+```
+
+
+
+
+## Question 2
+
+```{r}
+
+with(births, hist(weight[Habit == "Smoker"],
+            freq = FALSE,density = 15, col = "red", 
+            xlab = "Weight (in ounces)", main = "Histogram of Weight by Mother's Smoking Habit",
+            xlim = range(weight), ylim = c(0,0.03)
+                  ))
+
+
+with(births, hist(weight[Habit == "NonSmoker"],
+            freq = FALSE, density = 30, col = "darkgreen", 
+            breaks = 20, add = TRUE
+                  ))
+
+legend("topleft", c("Smoker", "NonSmoker", "Smoker Density Estimate", "NonSmoker Density Estimate", "Smoker Median", "NonSmoker Median"),
+       density = c(15, 30, NA,NA,NA,NA),
+       fill = c("red", "darkgreen",0,0,0,0), border= c(1,1,NA,NA,NA,NA), 
+       inset = 0.005, col = c(NA,NA, "red", "darkgreen", "red", "darkgreen"), lty = c(NA,NA, 1,1,2,2), lwd = c(NA,NA,1.5,1.5,1,1))
+
+lines(density(births$weight[births$Habit == "Smoker"]), lwd = 1.5, col = "red")
+lines(density(births$weight[births$Habit == "NonSmoker"]), lwd = 1.5, col = "darkgreen")
+
+abline(v = summary(births$weight[births$Habit == "Smoker"])[3], lty = 2, col = "red")
+abline(v = summary(births$weight[births$Habit == "NonSmoker"])[3], lty = 2, col = "darkgreen")
+
+
+
+
+```
+
+
+## Question 3
+
+### Part a
+
+```{r chunk_name, cache = TRUE}
+library(ggplot2)
+pairs(diamonds[, c("carat", "depth", "table", "price")], lower.panel = NULL, cex = 0.1)
+
+
+```
+carat and price seem to have the strongest relationship
+
+### Part b
+
+```{r}
+
+plot(price ~ carat, data = diamonds, cex = 0.3, pch = 4, col = clarity, main = "Carat vs. Price")
+legend("topright", 
+       legend = levels(diamonds$clarity), 
+       col = 1:length(diamonds$clarity), 
+       pch = 4,
+       title = "Clarity",  inset = 0.005)
+
+## class(diamonds$clarity)
+## clarity is an ordered factor. 
+
+```
+The colors are assigned based on my R's internal color palette, which can be customized. Each color is assigned a number and since there are 8 levels in clarity, each level will be of the color of that number. Ordered factors have a natural ordering, and the default color assignment reflects this order.
+
+
+### Part c
+
+```{r}
+custom_colors <- c("coral", "blue", "deeppink", "darkmagenta", "chartreuse4", "gold", "darkred", "cornflowerblue")
+
+# Map clarity levels to custom colors
+clarity_colors <- custom_colors[as.numeric(diamonds$clarity)]
+
+plot(price ~ carat, data = diamonds, cex = 0.3, pch = 4, col = clarity_colors, main = "Carat vs. Price")
+
+legend("topright", 
+       legend = levels(diamonds$clarity), 
+       col = custom_colors, 
+       pch = 4,
+       title = "Clarity", inset = 0.02)
+
+## class(diamonds$clarity)
+## clarity is an ordered factor. 
+
+```
+
+
+### Part d
+
+The higher the price, the diamonds more likely to be of "internally flawless". Lower clarity grades, such as Included 1 (I1), are generally associated with lower-priced diamonds. Diamonds with more visible inclusions are considered less valuable. Diamonds with higher clarity grades tend to be more expensive. Heavier diamonds are more rare. We can also observe a trend where diamonds have larger carat weights but possibly lower prices due to the lower clarity grade. I've learned how "Internally Flawless" (IF) are considered very high-quality diamonds with no visible inclusions under 10x magnification. These diamonds are rarer and, therefore, tend to command higher prices. 
+
+
+
+## Question 4
+
+### Part a
+
+```{r}
+
+mean_cut_color <- matrix(
+  tapply(diamonds$price, list(diamonds$color, diamonds$cut), mean),
+  nrow = length(levels(diamonds$color))
+)
+
+```
+
+
+### Part b
+
+```{r}
+
+# Create a matrix of mean prices for each color-cut combination
+mean_cut_color <- matrix(
+  tapply(diamonds$price, list(diamonds$color, diamonds$cut), mean),
+  nrow = length(levels(diamonds$color))
+)
+
+rownames(mean_cut_color) <- levels(diamonds$color)
+colnames(mean_cut_color) <- levels(diamonds$cut)
+
+matplot(1:length(levels(diamonds$color)), mean_cut_color, type = "l", lty = 1:3, col = 1:6, lwd = 2, xaxt = "n", xlab = "Color", ylab = "Mean Price")
+
+axis(1, at = 1:length(levels(diamonds$color)), labels = levels(diamonds$color))
+
+legend("topright", legend = levels(diamonds$cut), col = 1:6, lty = 1:6, lwd = 2, title = "Cut")
+
+
+```
+
+
+### Part c
+
+In ordered rank, color levels closer to J are of higher price. For cut, based on the ordered rank, it varies. Premium costs the highest, ideal costs the least. In increasing order: ideal, good, very good, fair, premium. 
+
+```{r}
+mean_cut_color
+summary(mean_cut_color)
+```
+
+Premium has the highest mean price, while Ideal has the lowest mean price. 
+
